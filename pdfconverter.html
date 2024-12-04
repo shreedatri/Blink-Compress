@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MY IMAGE COMPRESSOR</title>
+    <link rel='stylesheet' type='text/css' href="./stylesheet.css" media='screen'>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        clifford: '#da373d',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="bg-gradient-to-r from-teal-700 to-pink-100 p-20 content-center">
+
+    <h1 class="text-4xl font-large font-bold  text-center ">CONVERT IMAGES INTO PDF WITHIN SECONDS...<br /> WITH BLINK
+        IMAGES</h1>
+    <div class="flex items-center justify-center p-10">
+        <input type="file" id="image" class="cursor-pointer border p-2 rounded-md shadow" onchange="upload(event)">
+
+    </div>
+    <div class="text-center">
+        <span class="text-2xl block font-semibold mb-2"></span>
+        <div class="p-4 flex items-center justify-center bg-white rounded-md shadow-lg max-w-full sm:max-w-md mx-auto">
+            <img id="showImage" alt="Image" class="w-full max-h-96 object-contain rounded-md" />
+        </div>
+
+    </div>
+    <div class="flex items-center justify-center p-10">
+        <button class="bg-blue-100 rounded-md shadow p-2 hover:bg-blue-200" type="reset" onclick="download()">DOWNLOAD
+            AS PDF</button>
+
+    </div>
+    <div class="flex items-center justify-center p-10">
+        <button class="bg-blue-100 rounded-md shadow p-2 hover:bg-blue-200"><a href="index.html"><img class="h-5 w-5 ronded-md" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRpnEd2tZOUVUX5yqmbXzDgqdXHTWTi4N_wOl7bMW8H2UEmu9kP6_DndusrEGD_mffrlqs&usqp=CAU"></a></button>
+
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.debug.js"></script>
+    <script>
+        let newImage;
+        function upload(event) {
+            showImage = document.getElementById("showImage");
+            const file = URL.createObjectURL(event.target.files[0]);
+            if (file) {
+                const ImageURL = URL.createObjectURL(event.target.files[0]);
+                showImage.src = ImageURL;
+
+                newImage = new Image();
+                newImage.src = ImageURL;
+
+                showImage.onload = function () {
+                    URL.revokeObjectURL(ImageURL);
+                };
+            }
+        }
+        function download() {
+            if (!newImage) {
+                alert("PLEASE UPLOAD AN IMAGE TO DOWNLOAD ITS PDF VERSION");
+                return;
+            }
+            const doc = new jsPDF();
+            doc.addImage(newImage, 10, 10);
+            doc.save('PDF_FORMAT_IMAGE.pdf');
+        }
+    </script>
+</body>
